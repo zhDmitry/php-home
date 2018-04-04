@@ -1,0 +1,48 @@
+version: '3.3'
+services: 
+  web:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+    volumes:
+      - ./src:/src
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    links:
+      - php
+    env_file:
+      - 'dev.env'
+
+  php:
+    build: .
+    volumes: 
+      - ./src:/src
+    links:
+      - db
+      - maildev
+    env_file:
+      - 'dev.env'  
+
+  db:
+    image: mysql:latest
+    ports:
+      - "3306:3306"
+    volumes:
+       - ./dump:/docker-entrypoint-initdb.d
+    env_file:
+      - 'dev.env'
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    links:
+      - db:db
+    ports:
+      - "8082:80"
+    environment:
+      - PHP_UPLOAD_MAX_FILESIZE=100MB
+    env_file:
+      - 'dev.env'
+
+  maildev:
+    image: djfarrelly/maildev
+    ports:
+    - "8081:80"

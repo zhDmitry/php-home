@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+</head>
+
+<body>
+    <section class="section">
+        <div class="container">
+            <div>
+                <form onsubmit="submit" action="/form-task/create.php" method="POST" id="user_form">
+                    <div class="field">
+                        <div class="control">
+                            <input class="input" name="name" id="name" type="text" required placeholder="Name">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <input class="input" id="email" name="email" type="text" required placeholder="Email">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <input class="input" id="password" name="password" type="password" required placeholder="Password">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <input class="input" id="confirm_password" name="confirm_password" required type="password" placeholder="Repeat password">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <button type="submit" id="submit" class="button">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</body>
+<script>
+    submit.addEventListener('submit', event => {
+        event.preventDefault();
+    });
+    function validateEmail(email) {
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
+    }
+    
+    var password = document.getElementById("password")
+        , confirm_password = document.getElementById("confirm_password");
+
+
+    function validatePassword() {
+        if (password.value != confirm_password.value) {
+            confirm_password.setCustomValidity("Passwords Don't Match 🔥");
+        } else {
+            confirm_password.setCustomValidity('');
+        }
+    }
+
+    email.onchange = (e)=> {
+        const email = e.target;
+        if(!validateEmail(email.value)){
+            email.setCustomValidity('Please enter correct email 😿')
+        }else {
+            email.setCustomValidity('')
+        }
+    }
+
+    password.onchange = validatePassword;
+    confirm_password.onchange = validatePassword;
+</script>
+
+</html>
